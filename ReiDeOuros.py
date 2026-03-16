@@ -50,8 +50,13 @@ for i in range(num_humanos):
     nome = input(f'Nome do Jogador {i+1}: ').capitalize().strip()
     dados.append([nome, 0, False])
 
+nomes = [
+    "Lucas", "Ana", "Bruno", "Marina", "Carlos",
+    "Julia", "Pedro", "Camila", "Rafael", "Larissa",
+    "Mateus", "Beatriz", "Thiago", "Isabela", "Gustavo"
+]
 while len(dados) < 5:
-    nome = f"Bot{len(dados)+1}"
+    nome = choice(nomes)
     dados.append([nome, 0, True])
 
 mostrou_1 = mostrou_2 = mostrou_3 = False
