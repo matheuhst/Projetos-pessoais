@@ -172,7 +172,7 @@ a penalidade do perdedor será dobrada. \033[4;91mK♦\033[m''')
         i = jogador[0]
         k = jogador[1]
         j = jogador[-1]
-
+   
         if len(dados) != 2 and j == numero_encontrado:
             vencedor = i
             print(f'O Vencedor da rodada é \033[4;33mMestre {vencedor}\033[m')
