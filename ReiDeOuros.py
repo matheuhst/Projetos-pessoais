@@ -128,27 +128,26 @@ a penalidade do perdedor será dobrada. \033[4;91mK♦\033[m''')
     for i in range(0, len(dados)):
         dados[i].append(numeros[i])
 
+    media = sum(numeros) / len(numeros)
+    resultado = media * 0.8
+
     if len(dados) > 2:
-        media = sum(numeros) / len(numeros)
-        resultado = media * 0.8
         numero_encontrado = encontrar_numero_mais_proximo(resultado, numeros)
 
-    elif len(dados) == 2:
+    if len(dados) == 2:
         a = dados[0][-1]
         b = dados[1][-1]
 
         if a == 0 and b == 100:
-            print(f'O Vencedor da rodada é \033[4;33mMestre {dados[1][0]}\033[m')
-            break
+            vencedor = dados[1][0]
 
         elif b == 0 and a == 100:
-            print(f'O Vencedor da rodada é \033[4;33mMestre {dados[0][0]}\033[m')
-            break
+            vencedor = dados[0][0]
 
         else:
             vencedor = dados[0][0] if abs(a - resultado) < abs(b - resultado) else dados[1][0]
-            print(f'O Vencedor da rodada é \033[4;33mMestre {vencedor}\033[m')
-            break
+
+        print(f'O Vencedor da rodada é \033[4;33mMestre {vencedor}\033[m')
 
     print()
     print('Vamos ver o que cada jogador escolheu:')
@@ -174,13 +173,17 @@ a penalidade do perdedor será dobrada. \033[4;91mK♦\033[m''')
         k = jogador[1]
         j = jogador[-1]
 
-        if j == numero_encontrado and not len(dados) == 2:
+        if len(dados) != 2 and j == numero_encontrado:
             vencedor = i
             print(f'O Vencedor da rodada é \033[4;33mMestre {vencedor}\033[m')
 
         else:
 
-            if len(dados) <= 3:
+            if len(dados) == 2:
+                if dados[n][0] != vencedor:
+                    dados[n][1] -= 1
+
+            elif len(dados) <= 3:
                 dados[n][1] -= 2
                 pontos = dados[n][1]
             else:
