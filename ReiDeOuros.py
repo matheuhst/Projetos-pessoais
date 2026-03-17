@@ -15,13 +15,22 @@ def encontrar_numero_mais_proximo(media, numeros):
     return numero_mais_proximo
 
 
-def jogador_virtual():
-    estrategia = choice([
-        lambda: randint(0, 100),
-        lambda: randint(35, 45),
-        lambda: randint(20, 30),
-        lambda: randint(10, 20)
-    ])
+def jogador_virtual(jogadores_restantes):
+    
+    if jogadores_restantes == 2:
+        estrategia = choice([
+            lambda: 0,
+            lambda: 100,
+            lambda: randint(1, 20)
+        ])
+    else:
+        estrategia = choice([
+            lambda: randint(0, 100),
+            lambda: randint(35, 45),
+            lambda: randint(20, 30),
+            lambda: randint(10, 20)
+        ])
+
     return estrategia()
 
 
@@ -93,10 +102,10 @@ a penalidade do perdedor será dobrada. \033[4;91mK♦\033[m''')
             print('\033[4;91mK♦\033[m Se alguém escolher 0, o jogador que escolher 100 é o vencedor. \033[4;91mK♦\033[m')
             print()
 
-        if dados[n][1] >= -10:
+        if dados[n][1] > -10:
 
             if dados[n][2]:  # BOT
-                num_jog = jogador_virtual()
+                num_jog = jogador_virtual(len(dados))
                 print(f'Mestre \033[4;97m{dados[n][0]}\033[m informe seu número: {num_jog}')
             else:
                 num_jog = int(input(f'Mestre \033[4;97m{dados[n][0]}\033[m informe seu número: '))
@@ -119,9 +128,27 @@ a penalidade do perdedor será dobrada. \033[4;91mK♦\033[m''')
     for i in range(0, len(dados)):
         dados[i].append(numeros[i])
 
-    media = sum(numeros) / len(numeros)
-    resultado = media * 0.8
-    numero_encontrado = encontrar_numero_mais_proximo(resultado, numeros)
+    if len(dados) > 2:
+        media = sum(numeros) / len(numeros)
+        resultado = media * 0.8
+        numero_encontrado = encontrar_numero_mais_proximo(resultado, numeros)
+
+    elif len(dados) == 2:
+        a = dados[0][-1]
+        b = dados[1][-1]
+
+        if a == 0 and b == 100:
+            print(f'O Vencedor da rodada é \033[4;33mMestre {dados[1][0]}\033[m')
+            break
+
+        elif b == 0 and a == 100:
+            print(f'O Vencedor da rodada é \033[4;33mMestre {dados[0][0]}\033[m')
+            break
+
+        else:
+            vencedor = dados[0][0] if abs(a - resultado) < abs(b - resultado) else dados[1][0]
+            print(f'O Vencedor da rodada é \033[4;33mMestre {vencedor}\033[m')
+            break
 
     print()
     print('Vamos ver o que cada jogador escolheu:')
@@ -172,15 +199,8 @@ a penalidade do perdedor será dobrada. \033[4;91mK♦\033[m''')
     for jogador in dados:
         print(f'{jogador[0].ljust(15, ".")}[ \033[4;33m{jogador[1]:>0}\033[m ]')
 
-    num = 0
-
-    for jogador in dados:
-        if jogador[1] <= -10:
-            del dados[num]
-            num -= 1
-        num += 1
-
-    if len(dados) == 1:
-        print(f'\033[4;91mK♦\033[m Jogo zerado! Parabéns Mestre {dados[0][0]} \033[4;91mK♦\033[m')
-
+    dados = [jogador for jogador in dados if jogador[1] > -10]
     rodada += 1
+
+if len(dados) == 1:
+    print(f'\033[4;91mK♦\033[m Jogo zerado! Parabéns Mestre {dados[0][0]} \033[4;91mK♦\033[m')
