@@ -67,6 +67,9 @@ nomes = [
 while len(dados) < 5:
     nome = choice(nomes)
     dados.append([nome, 0, True])
+    for i, j in enumerate(nomes):
+        if nome == j:
+            del nomes[i]
 
 mostrou_1 = mostrou_2 = mostrou_3 = False
 
